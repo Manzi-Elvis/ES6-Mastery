@@ -1,23 +1,28 @@
-# Day 1 - ES6 Fundamentals
+# let and const
 
-Today, I learned the foundation of modern JavaScript:
+Before ES6, JavaScript only had `var`.
 
-- let
-- const
-- Arrow functions
-- Template literals
-- Default parameters
+```js
+var age = 20;
+```
+
+ES6 introduced two new ways to declare variables:
+
+- `let`
+- `const`
+
+These are safer and easier to work with.
 
 ---
 
 # let
 
-`let` is used for variables whose values can change.
+`let` is used for variables whose values may change later.
 
 ```js
-let age = 99;
+let age = 20;
 
-age = 100;
+age = 21;
 
 console.log(age);
 ```
@@ -25,12 +30,30 @@ console.log(age);
 Output:
 
 ```txt
-100
+21
 ```
 
 ---
 
-## Block Scope
+# Reassigning Variables
+
+```js
+let score = 100;
+
+score = 150;
+
+console.log(score);
+```
+
+Output:
+
+```txt
+150
+```
+
+---
+
+# Block Scope
 
 Variables declared with `let` only exist inside their block.
 
@@ -42,7 +65,7 @@ Variables declared with `let` only exist inside their block.
 console.log(name);
 ```
 
-This produces:
+Output:
 
 ```txt
 ReferenceError: name is not defined
@@ -50,31 +73,65 @@ ReferenceError: name is not defined
 
 ---
 
+## Example
+
+```js
+let age = 20;
+
+if (age >= 18) {
+    let message = "Adult";
+}
+
+console.log(message);
+```
+
+Output:
+
+```txt
+ReferenceError
+```
+
+Because `message` only exists inside the if block.
+
+---
+
 # const
 
-`const` creates variables that cannot be reassigned.
+`const` creates variables whose references cannot be reassigned.
 
 ```js
 const country = "Rwanda";
-```
 
-Trying to change it:
-
-```js
 country = "Kenya";
 ```
 
-Produces:
+Output:
 
 ```txt
-TypeError: Assignment to constant variable.
+TypeError: Assignment to constant variable
 ```
 
 ---
 
-## Objects and Arrays with const
+# const Must Be Initialized
 
-The contents can change.
+Wrong:
+
+```js
+const age;
+```
+
+Correct:
+
+```js
+const age = 20;
+```
+
+---
+
+# Objects with const
+
+Even though the variable itself cannot be reassigned, the contents of the object can change.
 
 ```js
 const user = {
@@ -96,163 +153,112 @@ Output:
 
 ---
 
-# Arrow Functions
-
-Normal function:
+# Arrays with const
 
 ```js
-function add(a, b) {
-    return a + b;
-}
-```
+const colors = ["red", "blue"];
 
-Arrow function:
+colors.push("green");
 
-```js
-const add = (a, b) => {
-    return a + b;
-};
-```
-
----
-
-## Implicit Return
-
-```js
-const square = num => num * num;
-
-console.log(square(5));
+console.log(colors);
 ```
 
 Output:
 
-```txt
-25
+```js
+["red", "blue", "green"]
 ```
 
 ---
 
-## Returning Objects
+# Reassigning Arrays
 
 Wrong:
 
 ```js
-const createUser = () => {
-    name: "Elvis";
-};
-```
+const colors = ["red", "blue"];
 
-Correct:
-
-```js
-const createUser = () => ({
-    name: "Elvis"
-});
-```
-
----
-
-# Template Literals
-
-Old way:
-
-```js
-const name = "Elvis";
-
-console.log("Hello " + name);
-```
-
-Modern way:
-
-```js
-const name = "Elvis";
-
-console.log(`Hello ${name}`);
+colors = ["green"];
 ```
 
 Output:
 
 ```txt
-Hello Elvis
+TypeError
 ```
 
 ---
 
-## Multiple Variables
+# let vs const
 
 ```js
-const name = "Elvis";
-const age = 20;
-
-console.log(`My name is ${name} and I am ${age} years old.`);
+let age = 20;
+age = 21;
 ```
+
+Allowed.
 
 ---
 
-## Multi-line Strings
-
 ```js
-console.log(`
-JavaScript
-ES6
-Modern JS
-`);
+const PI = 3.14;
+PI = 5;
 ```
+
+Not allowed.
 
 ---
 
-# Default Parameters
+# Scope
 
-Without default values:
+Variables declared with `let` and `const` are block-scoped.
 
 ```js
-function greet(name) {
-    return `Hello ${name}`;
+{
+    const x = 10;
 }
 
-greet();
+console.log(x);
 ```
 
 Output:
 
 ```txt
-Hello undefined
+ReferenceError
 ```
 
 ---
 
-With default values:
+# Best Practice
 
-```js
-function greet(name = "Guest") {
-    return `Hello ${name}`;
-}
-```
+Use `const` by default.
 
-Output:
+Use `let` only when the value needs to change.
 
-```txt
-Hello Guest
-```
+Avoid using `var`.
 
 ---
 
 # Summary
 
-| Concept | Purpose |
-|---------|---------|
-| let | Variables that change |
-| const | Variables that shouldn't be reassigned |
-| Arrow Functions | Shorter functions |
-| Template Literals | Easier string formatting |
-| Default Parameters | Default values for missing arguments |
+| Keyword | Can Reassign? | Block Scoped? |
+|----------|--------------|---------------|
+| var | Yes | No |
+| let | Yes | Yes |
+| const | No | Yes |
 
 ---
 
-# Key Takeaways
+# Golden Rule
 
-- Use `const` by default.
-- Use `let` when values need to change.
-- Prefer arrow functions.
-- Use template literals instead of string concatenation.
-- Use default parameters to avoid `undefined`.
+Use:
+
+```js
+const
+```
+
+unless you know the value must change, then use:
+
+```js
+let
+```
